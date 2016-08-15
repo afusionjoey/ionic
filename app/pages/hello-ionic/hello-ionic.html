@@ -3,23 +3,16 @@
     <button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Hello Ionic</ion-title>
+    <ion-title></ion-title>
   </ion-navbar>
 </ion-header>
 
-
-<ion-content padding class="getting-started">
-
-  <h3>Welcome to your first Ionic app!</h3>
-
-  <p>
-    This starter project is our way of helping you get a functional app running in record time.
-  </p>
-  <p>
-    Follow along on the tutorial section of the Ionic docs!
-  </p>
-  <p>
-    <button primary menuToggle>Toggle Menu</button>
-  </p>
-
-</ion-content>
+<ion-card *ngFor="let item of data">
+  <img [src]="item.imageUrl" />
+  <ion-card-content>
+    <ion-card-title>
+      {{ item.blogName }}
+    </ion-card-title>
+    <p>Posted on {{ item.timestamp }}</p>
+  </ion-card-content>
+</ion-card>
