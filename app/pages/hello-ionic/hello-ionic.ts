@@ -16,7 +16,7 @@ export class HelloIonicPage {
   private data;
   // private isBusy: boolean;
 
-  getInfo() {
+  getData() {
     var tumblrOptions = new URLSearchParams();
     tumblrOptions.set("api_key", this.api_key);
     tumblrOptions.set("tag", this.tag);
@@ -38,8 +38,18 @@ export class HelloIonicPage {
   }
 
   ngOnInit() {
-    this.getInfo().subscribe(data => {
+    this.getData().subscribe(data => {
       this.data = data;
     });
+  }
+
+  doInfinite(infiniteScroll) {
+    setTimeout(() => {
+      this.getData().subscribe(data => {
+        // console.log(this.data.concat(data));
+        this.data = this.data.concat(data);
+      });
+      infiniteScroll.complete();
+    }, 500);
   }
 }

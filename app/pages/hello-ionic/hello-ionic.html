@@ -7,12 +7,25 @@
   </ion-navbar>
 </ion-header>
 
-<ion-card *ngFor="let item of data">
-  <img [src]="item.imageUrl" />
-  <ion-card-content>
-    <ion-card-title>
-      {{ item.blogName }}
-    </ion-card-title>
-    <p>Posted on {{ item.timestamp }}</p>
-  </ion-card-content>
-</ion-card>
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of data">
+      <ion-card >
+        <img [src]="item.imageUrl" />
+        <ion-card-content>
+          <ion-card-title>
+            {{ item.blogName }}
+          </ion-card-title>
+          <p>Posted on {{ item.timestamp }}</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
