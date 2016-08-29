@@ -13,13 +13,18 @@ export class HelloIonicPage {
   private api_key = "fuiKNFp9vQFvjLNvx4sUwti4Yb5yGutBN4Xh10LXZhhRKjWlV4";
   private tag = "lol";
   private tumblr_getTagged = "https://api.tumblr.com/v2/tagged";
-  private data;
+  private data = [];
+  private before;
+  private error = false;
   // private isBusy: boolean;
 
-  getData() {
+  getData(before?: number) {
     var tumblrOptions = new URLSearchParams();
     tumblrOptions.set("api_key", this.api_key);
     tumblrOptions.set("tag", this.tag);
+    if (typeof before !== 'undefined') {
+      tumblrOptions.set("before", this.before);
+    }
 
     return this.http.get(this.tumblr_getTagged, {search: tumblrOptions})
     .map(data => data.json())
@@ -37,19 +42,32 @@ export class HelloIonicPage {
     });
   }
 
-  ngOnInit() {
-    this.getData().subscribe(data => {
-      this.data = data;
+  load(before?: number) {
+    this.getData(before).subscribe(data => {
+      this.data = this.data.concat(data);
+      this.before = data.slice(-1)[0].timestamp;
+      this.error = false;
+    },
+    err => {
+      console.log(err);
+      this.error = true;
+      this.before = this.before + 1;
+      this.load(this.before);
     });
   }
 
+  ngOnInit() {
+      this.load();
+  }
+
+
   doInfinite(infiniteScroll) {
     setTimeout(() => {
-      this.getData().subscribe(data => {
-        // console.log(this.data.concat(data));
-        this.data = this.data.concat(data);
-      });
+      console.log(this.error);
+      this.load(this.before);
+      console.log(this.error);
+
       infiniteScroll.complete();
-    }, 500);
+    }, 2000);
   }
 }
