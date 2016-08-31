@@ -8,8 +8,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let item of data">
+  <ion-list [virtualScroll]="data">
+    <ion-item *virtualItem="let item">
       <ion-card >
         <img [src]="item.imageUrl" />
         <ion-card-content>
